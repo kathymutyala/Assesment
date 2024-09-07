@@ -63,7 +63,7 @@ router.get('/getContact', (req, res) => {
             } 
         });
     } else if (data_store === 'CRM') {
-        axios.get(`${FRESHSALES_BASE_URL}contacts/${contact_id}`, {
+        axios.get(`${FRESHSALES_DOMAIN}contacts/${contact_id}`, {
             headers : {
                 'Authorization' : `Token token=${FRESHSALES_API_KEY}`
             }
@@ -93,7 +93,7 @@ router.post('/updateContact', (req, res) => {
 
         });
     } else if(data_store === 'CRM') {
-        axios.put(`${FRESHSALES_BASE_URL}contacts/${contact_id}`, {
+        axios.put(`${FRESHSALES_DOMAIN}contacts/${contact_id}`, {
             contact: {
                 email: new_email,
                 mobile_number: new_mobile_number
