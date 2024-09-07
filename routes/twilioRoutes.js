@@ -1,11 +1,15 @@
 const express = require('express');
 const twilio =  require('twilio');
 const router = express.Router();
+require('dotenv').config();
 
 
 const VoiceResponse = twilio.twiml.VoiceResponse;
-const accountSid = 'ACe781a7b48fe76a9b374b71543b14339b';
-const authToken = '71d108b9d059a4218f370887eac525a3';
+const accountSid = process.env.TWILIO_ACCOUNT_SID;
+const authToken = process.env.TWILIO_AUTH_TOKEN;
+const twilioPhoneNumber = process.env.TWILIO_PHONE_NUMBER;
+const recipientPhoneNumber = process.env.RECIPIENT_PHONE_NUMBER;
+const interviewLink = process.env.INTERVIEW_LINK;
 
 const client = new twilio(accountSid, authToken);
 
@@ -44,9 +48,9 @@ router.post('/gather', (req, res) => {
 
     //Send Interview link through SMS
     client.messages.create({
-        body: 'Here is your interview link: https://v.personaliz.ai/?id=9b697c1a&uid=fe141702f66c760d85ab&mode=test',
-        from: '+1 548 290 7627',
-        to:'+91 6303306735',
+        body: `Here is your interview link: ${interviewLink}`,
+        from: twilioPhoneNumber,
+        to: recipientPhoneNumber,
 
     })
     .then(message => console.log('SMS sent:', message.sid))
@@ -66,8 +70,8 @@ router.post('/gather', (req, res) => {
 router.get('/makeCall', (req, res) => {
     client.calls.create({
         url: 'https://1drv.ms/u/s!AssNWNmUSYNtjv9VSb0TQm5cQ8_YQQ?e=ubsLY3',
-        to: '+91 6303306735',
-        from: '+1 548 290 7627'
+        to: recipientPhoneNumber,
+        from: twilioPhoneNumber
     })
     .then(call => console.log('Call initiated:', call.sid))
     .catch(err => console.log('Error:', err));
